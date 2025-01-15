@@ -1,0 +1,53 @@
+erDiagram
+    Projects {
+        INT project_id PK "Unikaalne projekti ID"
+        VARCHAR(100) project_name "Projekti nimi"
+        TEXT description "Projekti kirjeldus"
+        TIMESTAMP created_at "Loomise kuupäev ja kellaaeg"
+        TIMESTAMP updated_at "Muutmise kuupäev ja kellaaeg"
+    }
+
+    UserStories {
+        INT story_id PK "Unikaalne kasutajaloo ID"
+        INT project_id FK "Viide projektile"
+        VARCHAR(255) title "Kasutajaloo pealkiri"
+        TEXT description "Kasutajaloo kirjeldus"
+        VARCHAR(50) priority "Prioriteet (low, medium, high, critical)"
+        TIMESTAMP created_at "Loomise kuupäev ja kellaaeg"
+        TIMESTAMP updated_at "Muutmise kuupäev ja kellaaeg"
+    }
+
+    Criteria {
+        INT criterion_id PK "Unikaalne kriteeriumi ID"
+        INT story_id FK "Viide kasutajaloole"
+        VARCHAR(255) criterion_name "Kriteeriumi nimi"
+        VARCHAR(50) status "Staatus (todo, in_progress, done, blocked)"
+        TIMESTAMP due_date "Tähtaeg"
+        TIMESTAMP created_at "Loomise kuupäev ja kellaaeg"
+        TIMESTAMP updated_at "Muutmise kuupäev ja kellaaeg"
+    }
+
+    Comments {
+        INT comment_id PK "Unikaalne kommentaari ID"
+        INT criterion_id FK "Viide kriteeriumile"
+        INT story_id FK "Viide kasutajaloole"
+        INT user_id "Viide kasutajale"
+        TEXT comment_text "Kommentaari sisu"
+        TIMESTAMP created_at "Loomise kuupäev ja kellaaeg"
+    }
+
+    Labels {
+        INT label_id PK "Unikaalne sildi ID"
+        INT story_id FK "Viide kasutajaloole"
+        INT criterion_id FK "Viide kriteeriumile"
+        VARCHAR(50) label_name "Sildi nimi"
+        VARCHAR(7) color_code "Sildi värvikood"
+        TIMESTAMP created_at "Loomise kuupäev ja kellaaeg"
+    }
+
+    Projects ||--o{ UserStories : "sisaldab"
+    UserStories ||--o{ Criteria : "sisaldab"
+    UserStories ||--o{ Comments : "võib sisaldada"
+    Criteria ||--o{ Comments : "võib sisaldada"
+    UserStories ||--o{ Labels : "võib sisaldada"
+    Criteria ||--o{ Labels : "võib sisaldada"
